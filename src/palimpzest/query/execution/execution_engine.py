@@ -36,6 +36,7 @@ class ExecutionEngine:
         optimization_strategy: OptimizationStrategy = OptimizationStrategy.PARETO,
         max_workers: int | None = None,
         num_workers_per_plan: int = 1,
+        refinement: bool = False,
         *args,
         **kwargs,
     ) -> None:
@@ -66,7 +67,7 @@ class ExecutionEngine:
         # datasource; should be set by execute() with call to get_datasource()
         self.datasource = datasource
         self.using_validation_data = isinstance(self.datasource, ValidationDataSource)
-
+        self.refinement = refinement
 
     def execution_id(self) -> str:
         """
@@ -187,6 +188,7 @@ class ExecutionEngine:
         policy: Policy,
         optimizer: Optimizer,
         execution_data: list[RecordOpStats] | None = None,
+        refinement: bool = False,
     ) -> tuple[list[DataRecord], list[PlanStats]]:
         if execution_data is None:
             execution_data = []
@@ -200,6 +202,7 @@ class ExecutionEngine:
         records, plan_stats = self.execute_plan(
             plan=final_plan,
             plan_workers=self.max_workers,
+            refinement = refinement
         )
 
         # return the output records and plan stats

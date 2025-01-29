@@ -46,12 +46,12 @@ ContextType = TypeVar("ContextType")
 InputType = TypeVar("InputType")
 
 
-def generator_factory(model: Model, prompt_strategy: PromptStrategy, cardinality: Cardinality, verbose: bool = False) -> BaseGenerator:
+def generator_factory(model: Model, prompt_strategy: PromptStrategy, cardinality: Cardinality, verbose: bool = False, refinement: bool = False) -> BaseGenerator:
     """
     Factory function to return the correct generator based on the model, strategy, and cardinality.
     """
     if model in [Model.GPT_4o, Model.GPT_4o_MINI, Model.GPT_4o_V, Model.GPT_4o_MINI_V]:
-        return OpenAIGenerator(model, prompt_strategy, cardinality, verbose)
+        return OpenAIGenerator(model, prompt_strategy, cardinality, verbose, refinement)
 
     elif model in [Model.MIXTRAL, Model.LLAMA3, Model.LLAMA3_V]:
         return TogetherGenerator(model, prompt_strategy, cardinality, verbose)

@@ -34,6 +34,12 @@ def main():
         help="One of 'mincost', 'mintime', 'maxquality'",
         default="mincost",
     )
+    parser.add_argument(
+        "--refinement",
+        default = False,
+        action = "store_true",
+        help = "Output verified and refined using LLM evaluation pipeline (significantly longer)"
+    )
 
     args = parser.parse_args()
 
@@ -50,6 +56,7 @@ def main():
     task = args.task
     verbose = args.verbose
     profile = args.profile
+    refinement = args.refinement
 
     # Set policy
     policy = MaxQuality()
@@ -86,7 +93,8 @@ def main():
         execution_engine=execution_engine,
         policy=policy,
         verbose=verbose,
-        profile=profile
+        profile=profile,
+        multi_llm_verification=refinement
     )
 
     # Print results

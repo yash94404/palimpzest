@@ -40,6 +40,7 @@ class Execute:
         allow_mixtures: bool = True,
         optimization_strategy: OptimizationStrategy = OptimizationStrategy.PARETO,
         execution_engine: ExecutionEngine = NoSentinelSequentialSingleThreadExecution,
+        refinement: bool = False,
         *args,
         **kwargs,
     ):
@@ -64,4 +65,5 @@ class Execute:
             allow_rag_reduction=allow_rag_reduction,
             allow_mixtures=allow_mixtures,
             optimization_strategy=optimization_strategy,
+            refinement = refinement,
         ).execute(dataset=dataset, policy=policy)

@@ -64,7 +64,7 @@ class NoSentinelExecutionEngine(ExecutionEngine):
             records, plan_stats = self.execute_confidence_interval_strategy(dataset, policy, optimizer)
         
         else:
-            records, plan_stats = self.execute_strategy(dataset, policy, optimizer)
+            records, plan_stats = self.execute_strategy(dataset, policy, optimizer, self.refinement)
 
         # aggregate plan stats
         aggregate_plan_stats = self.aggregate_plan_stats(plan_stats)
@@ -92,7 +92,7 @@ class NoSentinelSequentialSingleThreadExecution(NoSentinelExecutionEngine, Seque
         SequentialSingleThreadPlanExecutor.__init__(self, *args, **kwargs)
         self.progress_manager = None
 
-    def execute_plan(self, plan: PhysicalPlan, num_samples: int | float = float("inf"), plan_workers: int = 1):
+    def execute_plan(self, plan: PhysicalPlan, num_samples: int | float = float("inf"), plan_workers: int = 1, refinement: bool = False):
         """Initialize the stats and execute the plan with progress reporting."""
         if self.verbose:
             print("----------------------")

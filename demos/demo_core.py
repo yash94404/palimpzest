@@ -177,7 +177,7 @@ def get_task_config(task, datasetid):
     
     return root_set, cols, stat_path
 
-def execute_task(task, datasetid, execution_engine, policy, verbose=False, profile=False):
+def execute_task(task, datasetid, execution_engine, policy, verbose=False, profile=False, refinement = False):
     """Execute a task and return results"""
     root_set, cols, stat_path = get_task_config(task, datasetid)
 
@@ -189,6 +189,7 @@ def execute_task(task, datasetid, execution_engine, policy, verbose=False, profi
         allow_code_synth=False,
         execution_engine=execution_engine,
         verbose=verbose,
+        refinement = refinement
     )
 
     if profile:

@@ -21,8 +21,9 @@ from palimpzest.utils.model_helpers import get_vision_models
 
 
 class FilterOp(PhysicalOperator, ABC):
-    def __init__(self, filter: Filter, *args, **kwargs):
+    def __init__(self, filter: Filter, refinement: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.refinement = refinement
         assert self.input_schema.get_desc() == self.output_schema.get_desc(), "Input and output schemas must match for FilterOp"
         self.filter_obj = filter
 
@@ -177,7 +178,7 @@ class LLMFilter(FilterOp):
         super().__init__(*args, **kwargs)
         self.model = model
         self.prompt_strategy = prompt_strategy
-        self.generator = generator_factory(model, prompt_strategy, Cardinality.ONE_TO_ONE, self.verbose)
+        self.generator = generator_factory(model, prompt_strategy, Cardinality.ONE_TO_ONE, self.verbose, self.refinement)
 
     def get_id_params(self):
         id_params = super().get_id_params()

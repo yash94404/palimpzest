@@ -29,6 +29,7 @@ class ConvertOp(PhysicalOperator, ABC):
         cardinality: Cardinality = Cardinality.ONE_TO_ONE,
         udf: Callable | None = None,
         desc: str | None = None,
+        refinement: bool = False,
         *args,
         **kwargs,
     ):
@@ -36,6 +37,7 @@ class ConvertOp(PhysicalOperator, ABC):
         self.cardinality = cardinality
         self.udf = udf
         self.desc = desc
+        self.refinement = refinement
 
     def get_id_params(self):
         id_params = super().get_id_params()
@@ -287,7 +289,7 @@ class LLMConvert(ConvertOp):
         self.model = model
         self.prompt_strategy = prompt_strategy
         if model is not None:
-            self.generator = generator_factory(model, prompt_strategy, self.cardinality, self.verbose)
+            self.generator = generator_factory(model, prompt_strategy, self.cardinality, self.verbose, self.refinement)
 
     def __str__(self):
         op = super().__str__()

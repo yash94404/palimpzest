@@ -20,6 +20,7 @@ class MixtureOfAgentsConvert(LLMConvert):
         temperatures: list[float],
         aggregator_model: Model,
         proposer_prompt: str | None = None,
+        refinement: bool = False,
         *args,
         **kwargs,
     ):
@@ -30,13 +31,13 @@ class MixtureOfAgentsConvert(LLMConvert):
         self.temperatures = list(sorted_temps)
         self.aggregator_model = aggregator_model
         self.proposer_prompt = proposer_prompt
-
+        self.refinement = refinement
         # create generators
         self.proposer_generators = [
-            generator_factory(model, self.prompt_strategy, self.cardinality, self.verbose)
+            generator_factory(model, self.prompt_strategy, self.cardinality, self.verbose, self.refinement)
             for model in proposer_models
         ]
-        self.aggregator_generator = generator_factory(aggregator_model, self.prompt_strategy, self.cardinality, self.verbose)
+        self.aggregator_generator = generator_factory(aggregator_model, self.prompt_strategy, self.cardinality, self.verbose, self.refinement)
 
     def __str__(self):
         op = super().__str__()
