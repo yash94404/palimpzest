@@ -21,7 +21,7 @@ paper_cols = [
 
 # lazily construct the computation to get emails about holidays sent in July
 #dataset = Dataset("testdata/matsci_pdfs/")
-dataset = Dataset("testdata/matsci_highlighted_text/")
+dataset = Dataset("testdata/Sample_Papers_NLP/")
 dataset = dataset.sem_add_columns(paper_cols)
 #dataset = dataset.sem_filter("The email was sent in July")
 #dataset = dataset.sem_filter("The email is about holidays")
@@ -33,3 +33,4 @@ output = dataset.run(config)
 # display output (if using Jupyter, otherwise use print(output_df))
 output_df = output.to_df(cols=["PaperIdentifier", "TargetChemical", "RecipeText"])
 print(output_df)
+output_df.to_csv('recipes.csv', index=False)
